@@ -7,17 +7,20 @@ use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
+    // Home window: Display list of To-Dos
     public function index()
     {
         $todos = Todo::latest()->get();
         return view('todos.index', compact('todos'));
     }
 
+    // Creation window: Show the form
     public function create()
     {
         return view('todos.create');
     }
 
+    // Store new To-Do item in DB
     public function store(Request $request)
     {
         $request->validate([
@@ -37,6 +40,7 @@ class TodoController extends Controller
         return redirect()->route('todos.index')->with('success', 'To-Do item created successfully!');
     }
 
+    // Toggle completion status
     public function toggle(Todo $todo)
     {
         $todo->is_completed = !$todo->is_completed;
@@ -46,6 +50,7 @@ class TodoController extends Controller
         return redirect()->route('todos.index')->with('success', 'To-Do status updated!');
     }
 
+    // Delete To-Do item
     public function destroy(Todo $todo)
     {
         $todo->delete();
